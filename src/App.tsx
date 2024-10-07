@@ -9,6 +9,7 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import Home from "./views/Home";
 import NotFound from "./views/NotFound";
 import Navbar from "./layout/Navbar";
+import Menu from "./views/Menu";
 
 function App() {
   // basename="/reto-tecnico-dos-nelumbo"
@@ -19,6 +20,7 @@ function App() {
           <CssBaseline />
           <HashRouter>
             <Navbar />
+            <Menu />
             <Routes>
               <Route index path="/" element={<Home />} />
               <Route path="/*" element={<NotFound />} />
