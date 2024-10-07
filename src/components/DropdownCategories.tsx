@@ -1,9 +1,17 @@
-import { MouseEvent, useState } from "react";
+import { Key, MouseEvent, useEffect, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Button, Menu, MenuItem } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { getCategories } from "../api";
 
 const DropdownCategories = () => {
-  const [categorySelected, setCategorySelected] = useState<string>("Todas");
+  const { data } = useQuery({
+    queryKey: ["getCategories"],
+    queryFn: getCategories,
+  });
+
+  const [categorySelected, setCategorySelected] =
+    useState<string>("Cargando...");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -16,6 +24,13 @@ const DropdownCategories = () => {
     setCategorySelected(value);
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    if (data?.[0].name) {
+      setCategorySelected(data?.[0].name);
+    }
+  }, [data]);
+
   return (
     <>
       <Button
@@ -34,7 +49,7 @@ const DropdownCategories = () => {
         className="rounded-none border-l-0 font-semibold text-gray-500 border-gray-500"
         endIcon={<KeyboardArrowDownIcon />}
       >
-        {categorySelected}
+        {categorySelected || data?.[0]?.name || ""}
       </Button>
       <Menu
         id="basic-menu"
@@ -45,9 +60,17 @@ const DropdownCategories = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={() => handleValue("Perfil")}>Profile</MenuItem>
-        <MenuItem onClick={() => handleValue("Cuenta")}>My account</MenuItem>
-        <MenuItem onClick={() => handleValue("Cerrar Sesión")}>Logout</MenuItem>
+        {data?.map((category: { id: Key | null | undefined; name: string }) => {
+          if (categorySelected === category.name) return <></>;
+          return (
+            <MenuItem
+              key={category.id}
+              onClick={() => handleValue(category.name)}
+            >
+              {category.name}
+            </MenuItem>
+          );
+        })}
       </Menu>
     </>
   );
