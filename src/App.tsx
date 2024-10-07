@@ -8,6 +8,7 @@ import NotFound from "./views/NotFound";
 function App() {
   return (
     <>
+      
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <HashRouter //basename="/reto-tecnico-dos-nelumbo"
