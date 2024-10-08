@@ -66,7 +66,7 @@ const CardProduct = (product: IPropsCardProduct) => {
                   opacity: "60%",
                 }}
               >
-                $ {product.price - 10}
+                $ {product.price + 20}
               </Typography>{" "}
               <Button variant="contained" color="secondary">
                 ¡Lo Quiero!

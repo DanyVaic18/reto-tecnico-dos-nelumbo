@@ -12,11 +12,21 @@ import { useCategoryStore } from "../store/categoryStore";
 const Products = () => {
   const searchNameProduct = useStore(
     useProductsStore,
-    (store) => store.searchNameProduct
+    (store) => store.searchNameProduct || ""
   );
   const categorySelected = useStore(
     useCategoryStore,
     (store) => store.categorySelected
+  );
+
+  const minPriceProduct = useStore(
+    useProductsStore,
+    (store) => store.minPriceProduct || ""
+  );
+
+  const maxPriceProduct = useStore(
+    useProductsStore,
+    (store) => store.maxPriceProduct || ""
   );
 
   const [offset, setOffeset] = useState<number>(0);
@@ -32,8 +42,10 @@ const Products = () => {
       getProducts({
         offset,
         limit,
-        title: searchNameProduct,
+        title: searchNameProduct || "",
         categoryId: categorySelected.id,
+        maxPrice: Number(maxPriceProduct),
+        minPrice: Number(minPriceProduct),
       }),
   });
 

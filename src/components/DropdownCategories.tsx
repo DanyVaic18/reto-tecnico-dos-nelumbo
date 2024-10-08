@@ -25,8 +25,7 @@ const DropdownCategories = () => {
     setAnchorEl(null);
   };
 
-  const handleValue = (value: ICategory
-  ) => {
+  const handleValue = (value: ICategory) => {
     useCategoryStore.setState(() => ({ categorySelected: value }));
     setAnchorEl(null);
   };
@@ -35,25 +34,33 @@ const DropdownCategories = () => {
     setAnchorEl(event.currentTarget);
   };
   return (
-    <Box display="flex" >
+    <Box display="flex" border="1px solid #6b7280">
       <Button
-        variant="outlined"
-      
-        className="rounded-none text-gray-500 border-gray-500 justify-start"
+        sx={{
+          color: "#6b7280",
+
+          borderRadius: "0",
+          width: "30%",
+        }}
       >
         Categorías
       </Button>
       <Button
-        variant="outlined"
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        className="rounded-none border-l-0 font-semibold text-gray-500 border-gray-500  capitalize justify-between truncate "
         endIcon={<KeyboardArrowDownIcon />}
+        sx={{
+          color: "#6b7280",
+          borderLeft: "1px solid #6b7280",
+          borderRadius: "0",
+          width: "70%",
+          justifyContent:"space-between "
+        }}
       >
-        {categorySelected.name|| categories?.[0]?.name || ""}
+        {categorySelected.name || categories?.[0]?.name || ""}
       </Button>
       <Menu
         id="basic-menu"
@@ -65,16 +72,15 @@ const DropdownCategories = () => {
         }}
       >
         {categorySelected.name !== "Todas" && (
-          <MenuItem onClick={() => handleValue(initAllCategory)}>Todas</MenuItem>
+          <MenuItem onClick={() => handleValue(initAllCategory)}>
+            Todas
+          </MenuItem>
         )}
 
         {categories?.map((category) => {
           if (categorySelected.name === category.name) return null;
           return (
-            <MenuItem
-              key={category.id}
-              onClick={() => handleValue(category)}
-            >
+            <MenuItem key={category.id} onClick={() => handleValue(category)}>
               {category.name}
             </MenuItem>
           );

@@ -14,7 +14,10 @@ const SearchProducts = () => {
 
   const handleChange = (ev: ChangeEvent<HTMLInputElement>) => {
     const val = ev.target.value;
-    useProductsStore.setState(() => ({ searchNameProduct: val }));
+    useProductsStore.setState(() => ({
+      ...useProductsStore.state,
+      searchNameProduct: val,
+    }));
   };
 
   return (
