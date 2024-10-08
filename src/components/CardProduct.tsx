@@ -1,6 +1,5 @@
 import { TProducts } from "../types/products";
 import {
-  Box,
   Button,
   Card,
   CardActions,
@@ -10,8 +9,8 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useState } from "react";
-import ArrowCircleRightRoundedIcon from "@mui/icons-material/ArrowCircleRightRounded";
-import ArrowCircleLeftRoundedIcon from "@mui/icons-material/ArrowCircleLeftRounded";
+import ButtonsImagesCardProducts from "./ButtonsImagesCardProducts";
+
 type IPropsCardProduct = TProducts;
 
 const CardProduct = (product: IPropsCardProduct) => {
@@ -20,7 +19,6 @@ const CardProduct = (product: IPropsCardProduct) => {
   const handleImages = (index: number) => {
     setSrcImageIndex(srcImageIndex + index);
   };
-
   return (
     <Grid size={4} key={product.id}>
       <Card sx={{ width: "100%" }}>
@@ -39,32 +37,11 @@ const CardProduct = (product: IPropsCardProduct) => {
               >
                 {product.title}
               </Typography>
-              <Box>
-                <ArrowCircleLeftRoundedIcon
-                  fontSize="large"
-                  color={srcImageIndex > 0 ? "primary" : "disabled"}
-                  cursor="pointer"
-                  onClick={() => {
-                    if (srcImageIndex > 0) {
-                      handleImages(-1);
-                    }
-                  }}
-                />
-                <ArrowCircleRightRoundedIcon
-                  fontSize="large"
-                  color={
-                    product.images.length - 1 > srcImageIndex
-                      ? "primary"
-                      : "disabled"
-                  }
-                  cursor="pointer"
-                  onClick={() => {
-                    if (product.images.length - 1 > srcImageIndex) {
-                      handleImages(1);
-                    }
-                  }}
-                />
-              </Box>
+              <ButtonsImagesCardProducts
+                images={product.images}
+                handleImagesIndex={handleImages}
+                imageIndex={srcImageIndex}
+              />
             </Grid>
             <Grid
               container
