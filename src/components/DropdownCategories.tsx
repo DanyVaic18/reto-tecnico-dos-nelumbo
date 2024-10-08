@@ -1,11 +1,12 @@
-import { Key, MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Box, Button, Menu, MenuItem } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { getCategories } from "../api";
+import { ICategory } from "../types/category";
 
 const DropdownCategories = () => {
-  const { data } = useQuery({
+  const { data: categories } = useQuery<ICategory[]>({
     queryKey: ["getCategories"],
     queryFn: getCategories,
   });
@@ -26,18 +27,18 @@ const DropdownCategories = () => {
   };
 
   useEffect(() => {
-    if (data?.[0].name) {
-      setCategorySelected(data?.[0].name);
+    if (categories?.[0].name) {
+      setCategorySelected(categories?.[0].name);
     }
-  }, [data]);
+  }, [categories]);
 
   return (
-    <>
+    <Box className="grid grid-cols-2">
       <Button
         variant="outlined"
-        className="rounded-none text-gray-500 border-gray-500"
+        className="rounded-none text-gray-500 border-gray-500 justify-start lg:text-lg"
       >
-        Categorias:
+        Categorías
       </Button>
       <Button
         variant="outlined"
@@ -46,10 +47,10 @@ const DropdownCategories = () => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        className="rounded-none border-l-0 font-semibold text-gray-500 border-gray-500"
+        className="rounded-none border-l-0 font-semibold text-gray-500 border-gray-500 w-full capitalize justify-between truncate lg:text-lg"
         endIcon={<KeyboardArrowDownIcon />}
       >
-        {categorySelected || data?.[0]?.name || ""}
+        {categorySelected || categories?.[0]?.name || ""}
       </Button>
       <Menu
         id="basic-menu"
@@ -60,8 +61,8 @@ const DropdownCategories = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        {data?.map((category: { id: Key | null | undefined; name: string }) => {
-          if (categorySelected === category.name) return <></>;
+        {categories?.map((category) => {
+          if (categorySelected === category.name) return null;
           return (
             <MenuItem
               key={category.id}
@@ -72,7 +73,7 @@ const DropdownCategories = () => {
           );
         })}
       </Menu>
-    </>
+    </Box>
   );
 };
 
