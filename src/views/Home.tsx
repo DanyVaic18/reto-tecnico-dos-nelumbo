@@ -6,14 +6,14 @@ import Products from "../components/Products";
 
 const Home = () => {
   return (
-    <Box className="grow px-[4%] my-6">
-      <Grid container spacing={10}>
-        <Grid size={3}>
+    <Box className="grow px-[2%] my-6">
+      <Grid container spacing={{ lg: 8, sm: 4, xs: 2 }}>
+        <Grid size={{ sm: 4, lg: 3 }}>
           <DropdownCategories />
         </Grid>
         <Grid size={"grow"}>
           <SearchProducts />
-          <Products></Products>
+          <Products />
         </Grid>
       </Grid>
     </Box>

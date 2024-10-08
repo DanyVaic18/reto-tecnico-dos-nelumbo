@@ -19,7 +19,7 @@ const CardProduct = (product: IPropsCardProduct) => {
     setSrcImageIndex(srcImageIndex + index);
   };
   return (
-    <Grid size={4} key={product.id}>
+    <Grid size={{ xs: 12, md: 6, lg: 4 }} key={product.id}>
       <Card sx={{ width: "100%" }}>
         <CardMedia
           sx={{ height: "50vh", objectFit: "contain" }}

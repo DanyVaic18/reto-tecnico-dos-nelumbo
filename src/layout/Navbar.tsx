@@ -4,7 +4,7 @@ import MacroPayLogo from "../assets/navbar/logo-macro-pay.svg";
 
 const Navbar = () => {
   return (
-    <AppBar position="static" className="p-4 flex flex-row justify-between ">
+    <AppBar component="nav" position="sticky" className="p-4 flex flex-row justify-between ">
       <img src={MacroPayLogo} alt="logo" className="w-full max-w-52" />
       <Box className="flex gap-3 items-center pr-[12%] 2xl:pr-[8%]">
         <Button variant="contained" color="secondary">

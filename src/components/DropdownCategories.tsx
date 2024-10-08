@@ -35,10 +35,11 @@ const DropdownCategories = () => {
     setAnchorEl(event.currentTarget);
   };
   return (
-    <Box className="grid grid-cols-2">
+    <Box display="flex" >
       <Button
         variant="outlined"
-        className="rounded-none text-gray-500 border-gray-500 justify-start lg:text-lg"
+      
+        className="rounded-none text-gray-500 border-gray-500 justify-start"
       >
         Categorías
       </Button>
@@ -49,7 +50,7 @@ const DropdownCategories = () => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        className="rounded-none border-l-0 font-semibold text-gray-500 border-gray-500 w-full capitalize justify-between truncate lg:text-lg"
+        className="rounded-none border-l-0 font-semibold text-gray-500 border-gray-500  capitalize justify-between truncate "
         endIcon={<KeyboardArrowDownIcon />}
       >
         {categorySelected.name|| categories?.[0]?.name || ""}

@@ -70,7 +70,7 @@ const Products = () => {
         {isLoading ? (
           <>
             {Array.from({ length: limit }, (_, ix) => ix).map((val) => (
-              <Grid size={4} key={val}>
+              <Grid size={{ xs: 1, md: 3, lg: 4 }} key={val}>
                 <Skeleton variant="rounded" height={"60vh"} width={"100%"} />
               </Grid>
             ))}
