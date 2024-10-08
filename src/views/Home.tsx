@@ -7,7 +7,7 @@ import Products from "../components/Products";
 const Home = () => {
   return (
     <Box className="grow px-[4%] my-6">
-      <Grid container spacing={3}>
+      <Grid container spacing={10}>
         <Grid size={3}>
           <DropdownCategories />
         </Grid>
