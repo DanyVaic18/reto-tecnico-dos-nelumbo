@@ -2,7 +2,6 @@ import { TProducts } from "../types/products";
 import {
   Button,
   Card,
-  CardActions,
   CardContent,
   CardMedia,
   Typography,
@@ -75,7 +74,6 @@ const CardProduct = (product: IPropsCardProduct) => {
             </Grid>
           </Grid>
         </CardContent>
-        <CardActions></CardActions>
       </Card>
     </Grid>
   );

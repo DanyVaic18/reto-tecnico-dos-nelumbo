@@ -1,12 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Grid from "@mui/material/Grid2";
 import { Box, Button, Skeleton, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../api";
 import { TProducts } from "../types/products";
 import CardProduct from "./CardProduct";
+import { useStore } from "@tanstack/react-store";
+import { useProductsStore } from "../store/productsStore";
+import { useCategoryStore } from "../store/categoryStore";
 
 const Products = () => {
+  const searchNameProduct = useStore(
+    useProductsStore,
+    (store) => store.searchNameProduct
+  );
+  const categorySelected = useStore(
+    useCategoryStore,
+    (store) => store.categorySelected
+  );
+
   const [offset, setOffeset] = useState<number>(0);
   const [limit] = useState<number>(9);
 
@@ -15,19 +27,23 @@ const Products = () => {
     error,
     isLoading,
   } = useQuery<TProducts[]>({
-    queryKey: ["getProducts", offset],
-    queryFn: () => getProducts(offset, limit),
+    queryKey: ["getProducts", offset, searchNameProduct, categorySelected.id],
+    queryFn: () =>
+      getProducts({
+        offset,
+        limit,
+        title: searchNameProduct,
+        categoryId: categorySelected.id,
+      }),
   });
-
-  useEffect(() => {
-    console.log(listProducts);
-  }, [listProducts]);
 
   const currentPage = offset / limit + 1;
 
-  //   const handlerProducts = () => {
-
-  //   }
+  const handleProducts = () => {
+    return listProducts?.filter((product) =>
+      product.title.toLowerCase().includes(searchNameProduct.toLowerCase())
+    );
+  };
 
   if (error) {
     return (
@@ -59,16 +75,19 @@ const Products = () => {
               </Grid>
             ))}
           </>
-        ) : listProducts?.length === 0 ? (
-          <Typography variant="h4">No productos disponibles</Typography>
+        ) : handleProducts()?.length === 0 ? (
+          <Box>
+            <Typography variant="h4">Lista de productos vacía</Typography>
+            {searchNameProduct && <Button></Button>}
+          </Box>
         ) : (
-          listProducts?.map((product) => {
+          handleProducts()?.map((product) => {
             return <CardProduct key={product.id} {...product} />;
           })
         )}
       </Grid>
 
-      <Box className="flex gap-3 my-3">
+      <Box display={searchNameProduct ? "none" : "flex"} gap="1rem">
         <Button
           variant="contained"
           onClick={() => setOffeset(offset - limit)}

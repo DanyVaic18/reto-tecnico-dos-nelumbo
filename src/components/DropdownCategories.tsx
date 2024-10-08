@@ -1,9 +1,11 @@
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Box, Button, Menu, MenuItem } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { getCategories } from "../api";
 import { ICategory } from "../types/category";
+import { initAllCategory, useCategoryStore } from "../store/categoryStore";
+import { useStore } from "@tanstack/react-store";
 
 const DropdownCategories = () => {
   const { data: categories } = useQuery<ICategory[]>({
@@ -11,27 +13,27 @@ const DropdownCategories = () => {
     queryFn: getCategories,
   });
 
-  const [categorySelected, setCategorySelected] =
-    useState<string>("Cargando...");
+  const categorySelected = useStore(
+    useCategoryStore,
+    (store) => store.categorySelected
+  );
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleValue = (value: string) => {
-    setCategorySelected(value);
+
+  const handleValue = (value: ICategory
+  ) => {
+    useCategoryStore.setState(() => ({ categorySelected: value }));
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    if (categories?.[0].name) {
-      setCategorySelected(categories?.[0].name);
-    }
-  }, [categories]);
-
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
   return (
     <Box className="grid grid-cols-2">
       <Button
@@ -50,7 +52,7 @@ const DropdownCategories = () => {
         className="rounded-none border-l-0 font-semibold text-gray-500 border-gray-500 w-full capitalize justify-between truncate lg:text-lg"
         endIcon={<KeyboardArrowDownIcon />}
       >
-        {categorySelected || categories?.[0]?.name || ""}
+        {categorySelected.name|| categories?.[0]?.name || ""}
       </Button>
       <Menu
         id="basic-menu"
@@ -61,12 +63,16 @@ const DropdownCategories = () => {
           "aria-labelledby": "basic-button",
         }}
       >
+        {categorySelected.name !== "Todas" && (
+          <MenuItem onClick={() => handleValue(initAllCategory)}>Todas</MenuItem>
+        )}
+
         {categories?.map((category) => {
-          if (categorySelected === category.name) return null;
+          if (categorySelected.name === category.name) return null;
           return (
             <MenuItem
               key={category.id}
-              onClick={() => handleValue(category.name)}
+              onClick={() => handleValue(category)}
             >
               {category.name}
             </MenuItem>

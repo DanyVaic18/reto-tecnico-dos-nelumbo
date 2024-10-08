@@ -7,7 +7,29 @@ export const getCategories = async () => {
   return res.json();
 };
 
-export const getProducts = async (page: number = 0, limit: number = 10) => {
-  const res = await fetch(`${apiUrl}/products?offset=${page}&limit=${limit}`);
-  return res.json();
+interface IGetProducts {
+  offset:number,
+  limit:number,
+  title:string,
+  categoryId:number
+}
+
+export const getProducts = async ({limit, offset: page, title, categoryId}:IGetProducts) => {
+  const params = new URLSearchParams();
+  
+  if(categoryId){
+    params.append('categoryId', categoryId.toString());
+    params.append('offset', page.toString());
+    params.append('limit', limit.toString());
+  }else if (title) {
+    params.append('title', title);
+  } else {
+    params.append('offset', page.toString());
+    params.append('limit', limit.toString());
+  }
+
+  const urlProducts = `${apiUrl}/products?${params.toString()}`;
+
+  const res = await fetch(urlProducts);
+  return res.json()
 };
