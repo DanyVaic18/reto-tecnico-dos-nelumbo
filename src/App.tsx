@@ -27,6 +27,7 @@ function App() {
               <Menu />
               <Routes>
                 <Route index path="/" element={<Home />} />
+                <Route path="/category/new" element={<>Holaa</>} />
                 <Route path="/*" element={<NotFound />} />
               </Routes>
             </HashRouter>
