@@ -37,25 +37,36 @@ const Products = () => {
     error,
     isLoading,
   } = useQuery<TProducts[]>({
-    queryKey: ["getProducts", offset, searchNameProduct, categorySelected.id],
+    queryKey: [
+      "getProducts",
+      offset,
+      searchNameProduct,
+      categorySelected.id,
+      maxPriceProduct,
+      minPriceProduct,
+    ],
     queryFn: () =>
       getProducts({
         offset,
         limit,
         title: searchNameProduct || "",
         categoryId: categorySelected.id,
-        maxPrice: Number(maxPriceProduct),
-        minPrice: Number(minPriceProduct),
+        maxPrice: maxPriceProduct,
+        minPrice: minPriceProduct,
       }),
   });
 
-  const currentPage = offset / limit + 1;
-
   const handleProducts = () => {
-    return listProducts?.filter((product) =>
-      product.title.toLowerCase().includes(searchNameProduct.toLowerCase())
+    return (
+      listProducts?.filter((product) =>
+        product.title.toLowerCase().includes(searchNameProduct.toLowerCase())
+      ) || []
     );
   };
+
+  const isEmptyListProducts: boolean = handleProducts()?.length === 0;
+
+  const currentPage: number = offset / limit + 1;
 
   if (error) {
     return (
@@ -82,12 +93,12 @@ const Products = () => {
         {isLoading ? (
           <>
             {Array.from({ length: limit }, (_, ix) => ix).map((val) => (
-              <Grid size={{ xs: 1, md: 3, lg: 4 }} key={val}>
+              <Grid size={{ xs: 12, md: 6, lg: 4 }} key={val}>
                 <Skeleton variant="rounded" height={"60vh"} width={"100%"} />
               </Grid>
             ))}
           </>
-        ) : handleProducts()?.length === 0 ? (
+        ) : isEmptyListProducts ? (
           <Box>
             <Typography variant="h4">Lista de productos vacía</Typography>
             {searchNameProduct && <Button></Button>}
@@ -99,7 +110,10 @@ const Products = () => {
         )}
       </Grid>
 
-      <Box display={searchNameProduct ? "none" : "flex"} gap="1rem">
+      <Box
+        display={searchNameProduct || isEmptyListProducts ? "none" : "flex"}
+        gap="1rem"
+      >
         <Button
           variant="contained"
           onClick={() => setOffeset(offset - limit)}
@@ -111,7 +125,7 @@ const Products = () => {
         <Button
           variant="contained"
           onClick={() => setOffeset(offset + limit)}
-          disabled={listProducts?.length === 0 || isLoading}
+          disabled={isEmptyListProducts || isLoading}
         >
           Next Page
         </Button>

@@ -8,11 +8,21 @@ import NavigationIcon from "@mui/icons-material/Navigation";
 
 const Home = () => {
   return (
-    <Box className="grow px-[2%] my-6" >
+    <Box className="grow px-[2%] my-6">
       <Grid container spacing={{ lg: 8, sm: 4, xs: 2 }}>
         <Grid size={{ xs: 12, md: 4, lg: 3 }} spacing={3}>
           <DropdownCategories />
-          <FieldsHandlePriceProduct />
+          <Box
+            my="0.5rem"
+            display="flex"
+            flexDirection="column"
+            gap={1}
+            boxShadow={2}
+            p={2}
+            bgcolor="white"
+          >
+            <FieldsHandlePriceProduct />
+          </Box>
         </Grid>
         <Grid size={"grow"}>
           <SearchProducts />
